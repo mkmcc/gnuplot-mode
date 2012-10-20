@@ -1,0 +1,11 @@
+#+TITLE gnuplot-mode
+
+This is an emacs major mode for editing gnuplot scripts.  This
+provides basic syntax highlighting and indentation, as well as a
+command (bound to "C-x p") to call gnuplot on the buffer.
+
+Some of this code is adapted from a more full-featured version by
+Bruce Ravel (available here http://xafs.org/BruceRavel/GnuplotMode; CC
+license).
+
+For more information, see the project website [[http://astro.berkeley.edu/~mkmcc/software/gnuplot-mode.html][here]].
