@@ -1,4 +1,4 @@
-;;; gnuplot-mode.el --- Major mode for editing gnuplot scripts
+;;; gnuplot.el --- Major mode for editing gnuplot scripts
 
 ;; Copyright (C) 2010-2012 Mike McCourt
 ;;
@@ -262,4 +262,4 @@ work."
 
 (provide 'gnuplot)
 
-;;; gnuplot-mode.el ends here
+;;; gnuplot.el ends here
