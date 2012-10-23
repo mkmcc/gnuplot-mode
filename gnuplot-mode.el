@@ -1,4 +1,4 @@
-;;; gnuplot.el --- Major mode for editing gnuplot scripts
+;;; gnuplot-mode.el --- Major mode for editing gnuplot scripts
 
 ;; Copyright (C) 2010-2012 Mike McCourt
 ;;
@@ -206,6 +206,7 @@ Gnuplot program is stored in the variable gnuplot-program"
       (local-set-key (kbd "q") (lambda () (interactive) (kill-buffer)))
       (message "Gnuplot encountered errors.")))))
 
+;;;###autoload
 (defun gnuplot-run-buffer ()
   "Runs gnuplot -persist as a synchronous process and passes the
 current buffer to it.  Buffer must be visiting a file for it to
@@ -219,6 +220,7 @@ work."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define the mode
+;;;###autoload
 (define-derived-mode gnuplot-mode fundamental-mode
   "Gnuplot"
   "Major mode for editing gnuplot files"
@@ -260,6 +262,6 @@ work."
   (define-key gnuplot-mode-map [remap comment-dwim] 'gnuplot-comment-dwim))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(provide 'gnuplot)
+(provide 'gnuplot-mode)
 
-;;; gnuplot.el ends here
+;;; gnuplot-mode.el ends here
