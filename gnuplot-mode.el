@@ -108,8 +108,7 @@
 
 
 ;; apply font lock commands
-(defvar gnuplot-font-lock-keywords)
-(setq gnuplot-font-lock-keywords
+(defvar gnuplot-font-lock-keywords
   `((,gp-commands           . font-lock-constant-face)
     (,gp-math-functions     . font-lock-function-name-face)
     (,gp-other-functions    . font-lock-constant-face)
