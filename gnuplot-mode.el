@@ -30,18 +30,29 @@
 ;; (add-to-list 'package-archives
 ;;              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
+;; Alternatively, you can just save this file and do the standard
+;; (add-to-list 'load-path "/path/to/gnuplot-mode.el")
+
 ;;; Configuration:
 
 ;; Add the following to your .emacs:
 
 ;; (require 'gnuplot-mode)
 
-;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
+;; ;; specify the gnuplot executable (if other than "gnuplot")
 ;; (setq gnuplot-program "/sw/bin/gnuplot")
-
-;; ;; automatically open files ending with .gp or .gnuplot in gnuplot mode
-;; (add-to-list 'auto-mode-alist
-;;              '("\\.\\(gp\\|gnuplot\\)$" . gnuplot-mode) t)
+;;
+;; ;; set gnuplot arguments (if other than "-persist")
+;; (setq gnuplot-flags "-persist -pointsize 2")
+;;
+;; ;; if you want, add a mode hook.  e.g., the following turns on
+;; ;; spell-checking for strings and comments and automatically cleans
+;; ;; up whitespace on save.
+;; (add-hook 'gnuplot-mode-hook
+;;           (lambda ()
+;;             (flyspell-prog-mode)
+;;             (add-hook 'before-save-hook
+;;                       'whitespace-cleanup nil t)))
 
 ;;; Code:
 
@@ -238,7 +249,6 @@ work."
 
 
 
-;; mode definition
 ;;;###autoload
 (define-derived-mode gnuplot-mode fundamental-mode
   "Gnuplot"
