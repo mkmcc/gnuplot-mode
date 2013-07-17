@@ -48,85 +48,73 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; explicitly define syntax types
 (defvar gp-math-functions
-  '("abs"   "acos"     "acosh"  "arg"   "asin"   "asinh"  "atan" "atan2" "atanh"
-    "besj0" "besj1"    "besy0"  "besy1" "ceil"   "cos"    "cosh" "erf"   "erfc"
-    "exp"   "floor"    "gamma"  "ibeta" "inverf" "igamma" "imag" "invnorm"
-    "int"   "lambertw" "lgamma" "log"   "log10"  "norm"   "rand" "real"
-    "sgn"   "sin"      "sinh"   "sqrt"  "tan"    "tanh")
+  (regexp-opt
+   '("abs"   "acos"     "acosh"  "arg"   "asin"   "asinh"  "atan" "atan2" "atanh"
+     "besj0" "besj1"    "besy0"  "besy1" "ceil"   "cos"    "cosh" "erf"   "erfc"
+     "exp"   "floor"    "gamma"  "ibeta" "inverf" "igamma" "imag" "invnorm"
+     "int"   "lambertw" "lgamma" "log"   "log10"  "norm"   "rand" "real"
+     "sgn"   "sin"      "sinh"   "sqrt"  "tan"    "tanh")
+   'words)
   "Gnuplot math functions.")
 
 (defvar gp-other-functions
-  '("gprintf"      "sprintf"    "strlen"  "strstrr" "substr" "strftime"
-    "strptime"     "system"     "word"    "words"   "column" "exists"
-    "stringcolumn" "timecolumn" "tm_hour" "tm_mday" "tm_min"
-    "tm_mon"       "tm_sec"     "tm_wday" "tm_yday" "tm_year" "valid")
+  (regexp-opt
+   '("gprintf"      "sprintf"    "strlen"  "strstrr" "substr" "strftime"
+     "strptime"     "system"     "word"    "words"   "column" "exists"
+     "stringcolumn" "timecolumn" "tm_hour" "tm_mday" "tm_min"
+     "tm_mon"       "tm_sec"     "tm_wday" "tm_yday" "tm_year" "valid")
+   'words)
   "Gnuplot other functions.")
 
 (defvar gp-reserved-modifiers
-  '("axes"   "every" "index"     "title"     "notitle"
-    "ps"     "pt"    "pointsize" "pointtype" "linetype"
-    "ls"     "lw"    "lt"        "linestyle" "linewidth"
-    "smooth" "thru"  "using"     "with")
+  (regexp-opt
+   '("axes"   "every" "index"     "title"     "notitle"
+     "ps"     "pt"    "pointsize" "pointtype" "linetype"
+     "ls"     "lw"    "lt"        "linestyle" "linewidth"
+     "smooth" "thru"  "using"     "with")
+   'words)
   "Gnuplot reserved words.")
 
 (defvar gp-other-keywords
-  '("term" "xrange" "yrange" "logscale" "out" "output")
+  (regexp-opt
+   '("term" "xrange" "yrange" "logscale" "out" "output")
+   'words)
   "Gnuplot keywords")
 
 (defvar gp-term-types
-  '("dumb" "x11" "postscript" "png" "gif" "enhanced")
+  (regexp-opt
+   '("dumb" "x11" "postscript" "png" "gif" "enhanced")
+   'words)
   "Gnuplot term types")
 
 (defvar gp-plot-types
-  '("lines" "points" "linespoints" "lp" "impulses" "dots" "steps"
-    "errorbars" "xerrorbars" "yerrorbars" "xyerrorbars" "boxes"
-    "boxerrorbars" "boxxyerrorbars" "candlesticks" "financebars"
-    "histeps" "vector")
+  (regexp-opt
+   '("lines" "points" "linespoints" "lp" "impulses" "dots" "steps"
+     "errorbars" "xerrorbars" "yerrorbars" "xyerrorbars" "boxes"
+     "boxerrorbars" "boxxyerrorbars" "candlesticks" "financebars"
+     "histeps" "vector")
+   'words)
   "Gnuplot plot styles")
 
 (defvar gp-commands
-  '("plot" "splot" "fit" "replot" "set" "unset")
+  (regexp-opt
+   '("plot" "splot" "fit" "replot" "set" "unset")
+   'words)
   "Gnuplot commands")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; make regexps of the types (faster and less memory)
-(defvar gp-math-functions-regexp
-  (regexp-opt gp-math-functions 'words))
-
-(defvar gp-other-functions-regexp
-  (regexp-opt gp-other-functions 'words))
-
-(defvar gp-reserved-modifiers-regexp
-  (regexp-opt gp-reserved-modifiers 'words))
-
-(defvar gp-other-keywords-regexp
-  (regexp-opt gp-other-keywords 'words))
-
-(defvar gp-term-types-regexp
-  (regexp-opt gp-term-types 'words))
-
-(defvar gp-plot-types-regexp
-  (regexp-opt gp-plot-types 'words))
-
-(defvar gp-commands-regexp
-  (regexp-opt gp-commands 'words))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; apply font lock commands
+(defvar gnuplot-font-lock-keywords)
 (setq gnuplot-font-lock-keywords
-  `((,gp-commands-regexp           . font-lock-constant-face)
-    (,gp-math-functions-regexp     . font-lock-function-name-face)
-    (,gp-other-functions-regexp    . font-lock-constant-face)
-    (,gp-reserved-modifiers-regexp . font-lock-type-face)
-    (,gp-other-keywords-regexp     . font-lock-preprocessor-face)
-    (,gp-term-types-regexp         . font-lock-string-face)
-    (,gp-plot-types-regexp         . font-lock-function-name-face)
-    ("\$[0-9]+"                    . font-lock-string-face)   ; columns
-    ("\\[\\([^]]+\\)\\]"           1 font-lock-string-face))) ; brackets
+  `((,gp-commands           . font-lock-constant-face)
+    (,gp-math-functions     . font-lock-function-name-face)
+    (,gp-other-functions    . font-lock-constant-face)
+    (,gp-reserved-modifiers . font-lock-type-face)
+    (,gp-other-keywords     . font-lock-preprocessor-face)
+    (,gp-term-types         . font-lock-string-face)
+    (,gp-plot-types         . font-lock-function-name-face)
+    ("\$[0-9]+"             . font-lock-string-face)   ; columns
+    ("\\[\\([^]]+\\)\\]"    1 font-lock-string-face))) ; brackets
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
