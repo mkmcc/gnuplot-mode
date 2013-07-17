@@ -34,7 +34,7 @@
 
 ;; Add the following to your .emacs:
 
-;; (require 'gnuplot)
+;; (require 'gnuplot-mode)
 
 ;; ;; specify the gnuplot executable (if other than /usr/bin/gnuplot)
 ;; (setq gnuplot-program "/sw/bin/gnuplot")
