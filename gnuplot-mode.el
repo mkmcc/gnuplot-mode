@@ -45,6 +45,12 @@
 
 ;;; Code:
 
+(defvar gnuplot-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-x p") 'gnuplot-run-buffer)
+    map)
+  "Keymap for `gnuplot-mode'.")
+
 ;; explicitly define syntax types
 (defvar gp-math-functions
   (regexp-opt
@@ -165,18 +171,6 @@ indentation for continued plot and splot lines."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; comment function
-(defun gnuplot-comment-dwim (arg)
-  (interactive "*P")
-  (require 'newcomment)
-  (let ((deactivate-mark nil)
-        (comment-start   "#")
-        (comment-end     ""))
-    (comment-dwim arg)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; function to call gnuplot on the buffer
 (defun gnuplot-run-file (file)
   "Runs gnuplot -persist on the file given as an argument.
@@ -244,13 +238,7 @@ work."
   (setq gp-other-functions nil)
   (setq gp-reserved-modifiers nil)
   (setq gp-plot-types nil)
-  (setq gp-commands nil)
-
-  ;; apply keybindings
-  (local-set-key (kbd "C-x p")   'gnuplot-run-buffer)
-  (local-set-key (kbd "C-c C-c") 'comment-region)
-  (local-set-key (kbd "C-c C-u") 'uncomment-region)
-  (define-key gnuplot-mode-map [remap comment-dwim] 'gnuplot-comment-dwim))
+  (setq gp-commands nil))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'gnuplot-mode)
