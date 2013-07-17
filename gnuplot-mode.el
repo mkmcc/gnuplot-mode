@@ -1,10 +1,10 @@
 ;;; gnuplot-mode.el --- Major mode for editing gnuplot scripts
 
-;; Copyright (C) 2010-2012 Mike McCourt
+;; Copyright (C) 2010-2013 Mike McCourt
 ;;
 ;; Authors: Mike McCourt <mkmcc@astro.berkeley.edu>
 ;; URL: https://github.com/mkmcc/gnuplot
-;; Version: 1.0.0
+;; Version: 1.1.0
 ;; Keywords: gnuplot, plotting
 
 ;; This file is not part of GNU Emacs.
