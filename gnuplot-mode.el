@@ -56,7 +56,8 @@
 
 (defvar gnuplot-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-x p") 'gnuplot-run-buffer)
+    (define-key map (kbd "C-x p")   'gnuplot-run-buffer)
+    (define-key map (kbd "C-c C-c") 'gnuplot-run-buffer)
     map)
   "Keymap for `gnuplot-mode'.")
 
