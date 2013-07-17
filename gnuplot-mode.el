@@ -45,6 +45,12 @@
 
 ;;; Code:
 
+(defvar gnuplot-program "gnuplot"
+  "Command to run gnuplot.")
+
+(defvar gnuplot-flags "-persist"
+  "Flags to pass to gnuplot.")
+
 (defvar gnuplot-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-x p") 'gnuplot-run-buffer)
@@ -191,13 +197,14 @@ See `gnuplot-find-indent-column' for details."
 
 ;; function to call gnuplot on the buffer
 (defun gnuplot-run-file (file)
-  "Runs gnuplot -persist on the file given as an argument.
-Gnuplot program is stored in the variable gnuplot-program"
-  (let ((gp-exit-status (call-process (if (boundp 'gnuplot-program)
-                                          gnuplot-program
-                                        "gnuplot")
-                                      file
-                                      "*gnuplot errors*" nil "-persist")))
+  "Runs gnuplot synchronously.
+
+Run gnuplot as `gnuplot-program', operating on FILE, with the
+arguments stored in `gnuplot-flags'.  Store the output in the
+buffer *gnuplot errors*, and raise it if gnuplot returns an exit
+code other than zero."
+  (let ((gp-exit-status (call-process gnuplot-program file
+                                      "*gnuplot errors*" nil gnuplot-flags)))
     (message "Running gnuplot...")
     (cond
      ((eq gp-exit-status 0)
@@ -205,7 +212,7 @@ Gnuplot program is stored in the variable gnuplot-program"
       (message "Running gnuplot... done."))
      (t
       (switch-to-buffer-other-window "*gnuplot errors*")
-      (toggle-read-only)
+      (read-only-mode)
       (local-set-key (kbd "q") (lambda () (interactive) (kill-buffer)))
       (message "Gnuplot encountered errors.")))))
 
