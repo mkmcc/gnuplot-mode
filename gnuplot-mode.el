@@ -233,7 +233,8 @@ work."
   (set (make-local-variable 'comment-start-skip) "#+\\s-*")
 
   ;; font lock
-  (setq font-lock-defaults '((gnuplot-font-lock-keywords)))
+  (set (make-local-variable 'font-lock-defaults)
+       '(gnuplot-font-lock-keywords))
   (setq show-trailing-whitespace t))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
