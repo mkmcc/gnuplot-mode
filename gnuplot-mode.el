@@ -51,6 +51,9 @@
 (defvar gnuplot-flags "-persist"
   "Flags to pass to gnuplot.")
 
+(defvar gnuplot-mode-hook nil
+  "Hook to run after `gnuplot-mode'.")
+
 (defvar gnuplot-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-x p") 'gnuplot-run-buffer)
@@ -253,7 +256,10 @@ work."
   ;; font lock
   (set (make-local-variable 'font-lock-defaults)
        '(gnuplot-font-lock-keywords))
-  (setq show-trailing-whitespace t))
+  (setq show-trailing-whitespace t)
+
+  ;; run user hooks
+  (run-hooks 'gnuplot-mode-hook))
 
 (provide 'gnuplot-mode)
 
