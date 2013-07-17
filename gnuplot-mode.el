@@ -51,6 +51,21 @@
     map)
   "Keymap for `gnuplot-mode'.")
 
+(defvar gnuplot-mode-syntax-table
+  (let ((st (make-syntax-table)))
+    (modify-syntax-entry ?*  "."  st)
+    (modify-syntax-entry ?+  "."  st)
+    (modify-syntax-entry ?-  "."  st)
+    (modify-syntax-entry ?/  "."  st)
+    (modify-syntax-entry ?%  "."  st)
+    (modify-syntax-entry ?'  "\"" st)
+    (modify-syntax-entry ?`  "w"  st)
+    (modify-syntax-entry ?_  "w"  st)
+    (modify-syntax-entry ?#  "<"  st)
+    (modify-syntax-entry ?\n ">"  st)
+    st)
+  "Syntax table for `gnuplot-mode'.")
+
 ;; explicitly define syntax types
 (defvar gp-math-functions
   (regexp-opt
@@ -209,6 +224,7 @@ work."
 (define-derived-mode gnuplot-mode fundamental-mode
   "Gnuplot"
   "Major mode for editing gnuplot files"
+  :syntax-table gnuplot-mode-syntax-table
 
   ;; other stuff
   (set (make-local-variable 'indent-line-function) 'gnuplot-indent-line)
@@ -216,18 +232,6 @@ work."
   (set (make-local-variable 'comment-end) "")
   (set (make-local-variable 'comment-column) 32)
   (set (make-local-variable 'comment-start-skip) "#[ \t]*")
-
-  ;; fix the syntax table
-  (modify-syntax-entry ?*  "."    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?+  "."    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?-  "."    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?/  "."    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?%  "."    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?'  "\""   gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?`  "w"    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?_  "w"    gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?#  "< b"  gnuplot-mode-syntax-table)
-  (modify-syntax-entry ?\n "> b"  gnuplot-mode-syntax-table)
 
   ;; font lock
   (setq font-lock-defaults '((gnuplot-font-lock-keywords)))
