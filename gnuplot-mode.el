@@ -45,24 +45,28 @@
 
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; explicitly define syntax types
 (defvar gp-math-functions
   (regexp-opt
-   '("abs"   "acos"     "acosh"  "arg"   "asin"   "asinh"  "atan" "atan2" "atanh"
-     "besj0" "besj1"    "besy0"  "besy1" "ceil"   "cos"    "cosh" "erf"   "erfc"
-     "exp"   "floor"    "gamma"  "ibeta" "inverf" "igamma" "imag" "invnorm"
-     "int"   "lambertw" "lgamma" "log"   "log10"  "norm"   "rand" "real"
-     "sgn"   "sin"      "sinh"   "sqrt"  "tan"    "tanh")
+   '("abs"     "acos"   "acosh"    "arg"     "asin"
+     "asinh"   "atan"   "atan2"    "atanh"   "besj0"
+     "besj1"   "besy0"  "besy1"    "ceil"    "cos"
+     "cosh"    "erf"    "erfc"     "exp"     "floor"
+     "gamma"   "ibeta"  "inverf"   "igamma"  "imag"
+     "invnorm" "int"    "lambertw" "lgamma"  "log"
+     "log10"   "norm"   "rand"     "real"    "sgn"
+     "sin"     "sinh"   "sqrt"     "tan"     "tanh")
    'words)
   "Gnuplot math functions.")
 
 (defvar gp-other-functions
   (regexp-opt
-   '("gprintf"      "sprintf"    "strlen"  "strstrr" "substr" "strftime"
-     "strptime"     "system"     "word"    "words"   "column" "exists"
-     "stringcolumn" "timecolumn" "tm_hour" "tm_mday" "tm_min"
-     "tm_mon"       "tm_sec"     "tm_wday" "tm_yday" "tm_year" "valid")
+   '("gprintf"      "sprintf"    "strlen"   "strstrr"
+     "substr"       "strftime"   "strptime" "system"
+     "word"         "words"      "column"   "exists"
+     "stringcolumn" "timecolumn" "tm_hour"  "tm_mday"
+     "tm_min"       "tm_mon"     "tm_sec"   "tm_wday"
+     "tm_yday"      "tm_year"    "valid")
    'words)
   "Gnuplot other functions.")
 
