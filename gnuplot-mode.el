@@ -231,14 +231,7 @@ work."
 
   ;; font lock
   (setq font-lock-defaults '((gnuplot-font-lock-keywords)))
-  (setq show-trailing-whitespace t)
-
-  ;; clear variables to save memory
-  (setq gp-math-functions nil)
-  (setq gp-other-functions nil)
-  (setq gp-reserved-modifiers nil)
-  (setq gp-plot-types nil)
-  (setq gp-commands nil))
+  (setq show-trailing-whitespace t))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'gnuplot-mode)
