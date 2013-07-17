@@ -231,7 +231,7 @@ work."
   (set (make-local-variable 'comment-start) "# ")
   (set (make-local-variable 'comment-end) "")
   (set (make-local-variable 'comment-column) 32)
-  (set (make-local-variable 'comment-start-skip) "#[ \t]*")
+  (set (make-local-variable 'comment-start-skip) "#+\\s-*")
 
   ;; font lock
   (setq font-lock-defaults '((gnuplot-font-lock-keywords)))
