@@ -202,7 +202,9 @@ See `gnuplot-find-indent-column' for details."
 Run gnuplot as `gnuplot-program', operating on FILE, with the
 arguments stored in `gnuplot-flags'.  Store the output in the
 buffer *gnuplot errors*, and raise it if gnuplot returns an exit
-code other than zero."
+code other than zero.  Hitting 'q' inside the *gnuplot errors*
+buffer kills the buffer and restores the previous window
+configuration."
   (let ((gp-exit-status (call-process gnuplot-program file
                                       "*gnuplot errors*" nil gnuplot-flags)))
     (message "Running gnuplot...")
@@ -211,9 +213,13 @@ code other than zero."
       (kill-buffer "*gnuplot errors*")
       (message "Running gnuplot... done."))
      (t
+      (window-configuration-to-register :gnuplot-errors)
       (switch-to-buffer-other-window "*gnuplot errors*")
       (read-only-mode)
-      (local-set-key (kbd "q") (lambda () (interactive) (kill-buffer)))
+      (local-set-key (kbd "q")
+                     (lambda () (interactive)
+                       (kill-buffer)
+                       (jump-to-register :gnuplot-errors)))
       (message "Gnuplot encountered errors.")))))
 
 ;;;###autoload
