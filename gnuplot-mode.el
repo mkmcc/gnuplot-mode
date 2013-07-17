@@ -230,7 +230,6 @@ work."
   (set (make-local-variable 'indent-line-function) 'gnuplot-indent-line)
   (set (make-local-variable 'comment-start) "# ")
   (set (make-local-variable 'comment-end) "")
-  (set (make-local-variable 'comment-column) 32)
   (set (make-local-variable 'comment-start-skip) "#+\\s-*")
 
   ;; font lock
