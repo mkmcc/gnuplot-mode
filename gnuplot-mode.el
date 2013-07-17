@@ -145,42 +145,45 @@
 
 
 ;; indentation
+(defun gnuplot-find-indent-column ()
+  "Find the column to indent to.
+
+Start with the value `back-to-indentation' gives for the previous
+line.  Next, check whether the previous line starts with a plot
+command *and* ends with line continuation.  If so, increment the
+indent column by the size of the plot command."
+  (save-excursion
+    ;; start with the indentation of the previous line
+    (end-of-line 0)
+    (back-to-indentation)
+    (let ((indent (current-column))
+          (cmd-regexp (regexp-opt '("splot" "plot" "fit"))))
+      ;; check if there's a plot or fit command and a line
+      ;; continuation.  if so, adjust the indentation
+      (cond
+       ((looking-at (concat cmd-regexp "\\s-+"))
+        (let ((offset (length (match-string 0))))
+          (end-of-line)
+          (backward-char 1)
+          (if (looking-at (regexp-quote "\\"))
+              (+ indent offset)
+            indent)))
+       (t
+        indent)))))
+
 (defun gnuplot-indent-line ()
-  "Set indentation in gnuplot buffer.  For most lines, set
-indentation to previous level of indentation.  Add additional
-indentation for continued plot and splot lines."
+  "Indent the current line.
+
+See `gnuplot-find-indent-column' for details."
   (interactive)
 
-  (let ((indent)
-        (offset))
-    ; first determine where we should indent
+  (let ((indent (gnuplot-find-indent-column)))
     (save-excursion
-      ; set indent to match the first non-whitespace character on the
-      ; previous line.
-      (end-of-line 0)
-      (back-to-indentation)
-      (setq indent (current-column))
-
-      ; if it's a continuation of a plot command, indent to reflect
-      ; that.
-      (when (looking-at "s?pl\\(o?\\|\\(ot\\)?\\)[ \t]+.?")
-        (setq offset (length (match-string 0)))
-        (end-of-line)
-        (backward-char 1)
-        (if (looking-at (regexp-quote "\\"))
-          (setq indent  (+ indent offset -1)))))
-
-    ; now perform the indent
-    (save-excursion
-      ; if the line is not already indented properly, delete all the
-      ; whitespace at the beginning of the line and pad with (indent)
-      ; spaces. ('? ' is the decimal value of ' ')
       (unless (= (current-indentation) indent)
         (beginning-of-line)
         (delete-horizontal-space)
         (insert (make-string indent ? ))))
 
-    ; skip over the indent, if necessary
     (when (< (current-column) indent)
       (back-to-indentation))))
 
