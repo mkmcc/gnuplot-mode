@@ -261,6 +261,10 @@ work."
   ;; run user hooks
   (run-hooks 'gnuplot-mode-hook))
 
+;;;###autoload
+(dolist (pattern '("\\.gnuplot\\'" "\\.gp\\'"))
+  (add-to-list 'auto-mode-alist (cons pattern 'gnuplot-mode)))
+
 (provide 'gnuplot-mode)
 
 ;;; gnuplot-mode.el ends here
