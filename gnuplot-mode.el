@@ -175,20 +175,20 @@ command *and* ends with line continuation.  If so, increment the
 indent column by the size of the plot command."
   (save-excursion
     ;; start with the indentation of the previous line
-    (end-of-line 0)
+    (next-line -1)
     (back-to-indentation)
-    (let ((indent (current-column))
-          (cmd-regexp (regexp-opt '("splot" "plot" "fit"))))
-      ;; check if there's a plot or fit command and a line
-      ;; continuation.  if so, adjust the indentation
+    ;; check if there's a plot or fit command and a line
+    ;; continuation.  if so, adjust the indentation
+    (let* ((indent (current-column))
+           (cmd-regexp                  ; matches a plot command
+            (regexp-opt '("splot" "plot" "fit") 'words))
+           (continuation-regexp         ; matches a continued line
+            (concat "\\(" cmd-regexp "\\s-+" "\\)"
+                    ".*" (regexp-quote "\\") "$")))
       (cond
-       ((looking-at (concat cmd-regexp "\\s-+"))
-        (let ((offset (length (match-string 0))))
-          (end-of-line)
-          (backward-char 1)
-          (if (looking-at (regexp-quote "\\"))
-              (+ indent offset)
-            indent)))
+       ((looking-at continuation-regexp)
+        (let ((offset (length (match-string 1))))
+          (+ indent offset)))
        (t
         indent)))))
 
@@ -256,8 +256,7 @@ work."
   :syntax-table gnuplot-mode-syntax-table
 
   ;; indentation
-  (set (make-local-variable 'indent-line-function)
-       'gnuplot-indent-line)
+  (set (make-local-variable 'indent-line-function) 'gnuplot-indent-line)
 
   ;; comment syntax for `newcomment.el'
   (set (make-local-variable 'comment-start)      "# ")
