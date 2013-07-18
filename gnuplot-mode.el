@@ -76,6 +76,15 @@
 ;;             (add-hook 'before-save-hook
 ;;                       'whitespace-cleanup nil t)))
 
+;;; TODO:
+;;  1. Make the indentation recognize the end of continued plot
+;;     commands.  For example, in the following file a newline should
+;;     indent under "plot," not "sin":
+;;
+;;       plot cos(x) w l,\
+;;            sin(x) w lp
+;;
+
 ;;; Code:
 
 (defvar gnuplot-program "gnuplot"
