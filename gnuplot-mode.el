@@ -226,10 +226,10 @@ indent column by the size of the plot command."
     ;;   plot sin(x) w l,\
     ;;
     ;; we want to indent under "sin", not "plot"
-    (let* ((indent (current-column))
-           (continuation-regexp         ; matches a continued line
-            (concat "\\(" gnuplot-continued-commands-regexp "\\s-+" "\\)"
-                    ".*" (regexp-quote "\\") "$")))
+    (let ((indent (current-column))
+          (continuation-regexp         ; matches a continued line
+           (concat "\\(" gnuplot-continued-commands-regexp "\\s-+" "\\)"
+                   ".*" (regexp-quote "\\") "$")))
       (cond
        ((looking-at continuation-regexp)
         (let ((offset (length (match-string 1))))
