@@ -81,11 +81,7 @@
 ;;     probably isn't ideal.  is it possible to rework them to use the
 ;;     syntax table?
 ;;
-;;  2. (related) the indentation scheme fails to recognize the last
-;;     lines of commands if they have a "\" anywhere in them (e.g., in
-;;     a string).  this is ok, but not ideal
-;;
-;;  3. make the gnuplot errors work like a compile buffer.  e.g., have
+;;  2. make the gnuplot errors work like a compile buffer.  e.g., have
 ;;     commands like `next-error' and `previous-error'.  that would be
 ;;     nice, but it sounds like a lot of work.
 ;;
@@ -259,16 +255,12 @@ column to indent to."
     ;;
     ;; we want to indent to under "plot," not "tan".
     ;;
-    ;; TODO: this regexp doesn't work if the last line has a \
-    ;;       *anywhere* in it. so if some perverse person puts forward
-    ;;       slashes in their plot labels, those lines won't indent
-    ;;       properly
     (end-of-line -1)                    ; go back *two* lines
     (forward-char -1)
     ;; this regexp is horrible.  it means "a \, followed immediately
     ;; by a newline, followed by some whitespace, followed by a single
-    ;; line which does not contain any slashes."
-    (when (looking-at "\\\\\n\\s-+[^\\\\\n]+$")
+    ;; line which does not end in a slash."
+    (when (looking-at "\\\\\n\\s-+\\([^\n]+\\)[^\\\\\n]\n")
       (when (re-search-backward gnuplot-continued-commands-regexp nil t)
         (current-column)))))
 

@@ -7,8 +7,9 @@ plot sin(x) w l,\
      cos(x) w l title "cats \ dogs",\
      tan(x) w l
 
+plot sin(x) w l,\
+     cos(x) w l title "cats \ dogs",\
 
-# FIXME: doesn't recognize the last line as a last line.
 plot sin(x) w l,\
      cos(x) w l,\
      tan(x) w l  title "cats \ dogs"
