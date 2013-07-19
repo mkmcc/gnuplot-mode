@@ -209,7 +209,12 @@ indent column by the size of the plot command."
     (forward-line -1)
     (back-to-indentation)
     ;; check if there's a plot or fit command and a line
-    ;; continuation.  if so, adjust the indentation
+    ;; continuation.  if so, adjust the indentation.
+    ;;
+    ;; example:
+    ;;   plot sin(x) w l,\
+    ;;
+    ;; we want to indent under "sin", not "plot"
     (let* ((indent (current-column))
            (cmd-regexp                  ; matches a plot command
             (regexp-opt '("splot" "plot" "fit") 'words))
