@@ -278,6 +278,7 @@ See `gnuplot-find-indent-column' for details."
   (interactive)
 
   (let ((indent
+         ; check last-line-p first!
          (or (gnuplot-last-line-p)
              (gnuplot-find-indent-column))))
     (save-excursion
