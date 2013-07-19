@@ -101,6 +101,12 @@
 (defvar gnuplot-mode-hook nil
   "Hook to run after `gnuplot-mode'.")
 
+(defvar gnuplot-continued-commands-regexp
+  (regexp-opt '("splot" "plot" "fit") 'words)
+  "Regexp which matches all commands which might continue over
+multiple lines.  Used in `gnuplot-find-indent-column' and in
+`gnuplot-last-line-p'.")
+
 (defvar gnuplot-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-x p")   'gnuplot-run-buffer)
@@ -221,10 +227,8 @@ indent column by the size of the plot command."
     ;;
     ;; we want to indent under "sin", not "plot"
     (let* ((indent (current-column))
-           (cmd-regexp                  ; matches a plot command
-            (regexp-opt '("splot" "plot" "fit") 'words))
            (continuation-regexp         ; matches a continued line
-            (concat "\\(" cmd-regexp "\\s-+" "\\)"
+            (concat "\\(" gnuplot-continued-commands-regexp "\\s-+" "\\)"
                     ".*" (regexp-quote "\\") "$")))
       (cond
        ((looking-at continuation-regexp)
@@ -257,8 +261,7 @@ indent column by the size of the plot command."
     (when (looking-at "\\\\
 \\s-+[^\\\\
 ]+$")
-      (when (re-search-backward
-             (regexp-opt '("splot" "plot" "fit") 'words) nil t)
+      (when (re-search-backward gnuplot-continued-commands-regexp nil t)
         (current-column)))))
 
 (defun gnuplot-indent-line ()
