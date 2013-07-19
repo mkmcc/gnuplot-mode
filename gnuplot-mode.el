@@ -4,7 +4,7 @@
 ;;
 ;; Authors: Mike McCourt <mkmcc@astro.berkeley.edu>
 ;; URL: https://github.com/mkmcc/gnuplot
-;; Version: 1.1.0
+;; Version: 1.1.1
 ;; Keywords: gnuplot, plotting
 
 ;; This file is not part of GNU Emacs.
