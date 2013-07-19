@@ -238,6 +238,13 @@ indent column by the size of the plot command."
         indent)))))
 
 (defun gnuplot-last-line-p ()
+  "Determine whether we're just after the last line of a
+multi-line plot command.  If so, we don't want to indent to the
+previous line, but instead to the beginning of the command.  See
+comments for details.
+
+Returns nil if nothing needs to be done; otherwise return the
+column to indent to."
   (save-excursion
     ;; check that the previous line does *not* end in a continuation,
     ;; and that the line before it *does*.  if so, we just ended a
