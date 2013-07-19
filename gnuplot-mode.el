@@ -77,12 +77,17 @@
 ;;                       'whitespace-cleanup nil t)))
 
 ;;; TODO:
-;;  1. Make the indentation recognize the end of continued plot
-;;     commands.  For example, in the following file a newline should
-;;     indent under "plot," not "sin":
+;;  1. the indentation commands use regular expressions, which
+;;     probably isn't ideal.  is it possible to rework them to use the
+;;     syntax table?
 ;;
-;;       plot cos(x) w l,\
-;;            sin(x) w lp
+;;  2. (related) the indentation scheme fails to recognize the last
+;;     lines of commands if they have a "\" anywhere in them (e.g., in
+;;     a string).  this is ok, but not ideal
+;;
+;;  3. make the gnuplot errors work like a compile buffer.  e.g., have
+;;     commands like `next-error' and `previous-error'.  that would be
+;;     nice, but it sounds like a lot of work.
 ;;
 
 ;;; Code:
@@ -228,13 +233,43 @@ indent column by the size of the plot command."
        (t
         indent)))))
 
+(defun gnuplot-last-line-p ()
+  (save-excursion
+    ;; check that the previous line does *not* end in a continuation,
+    ;; and that the line before it *does*.  if so, we just ended a
+    ;; multi-line command.  thus, we should not match indentation of
+    ;; the previous line (as above), but the indentation of the
+    ;; beginning of the command
+    ;;
+    ;; example:
+    ;;   plot sin(x) w l,\
+    ;;        cos(x) w l,\
+    ;;        tan(x)
+    ;;
+    ;; we want to indent to under "plot," not "tan".
+    ;;
+    ;; TODO: this regexp doesn't work if the last line has a \
+    ;;       *anywhere* in it. so if some perverse person puts forward
+    ;;       slashes in their plot labels, those lines won't indent
+    ;;       properly
+    (end-of-line -1)                    ; go back *two* lines
+    (forward-char -1)
+    (when (looking-at "\\\\
+\\s-+[^\\\\
+]+$")
+      (when (re-search-backward
+             (regexp-opt '("splot" "plot" "fit") 'words) nil t)
+        (current-column)))))
+
 (defun gnuplot-indent-line ()
   "Indent the current line.
 
 See `gnuplot-find-indent-column' for details."
   (interactive)
 
-  (let ((indent (gnuplot-find-indent-column)))
+  (let ((indent
+         (or (gnuplot-last-line-p)
+             (gnuplot-find-indent-column))))
     (save-excursion
       (unless (= (current-indentation) indent)
         (beginning-of-line)
