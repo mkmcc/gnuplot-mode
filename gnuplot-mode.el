@@ -206,7 +206,7 @@ command *and* ends with line continuation.  If so, increment the
 indent column by the size of the plot command."
   (save-excursion
     ;; start with the indentation of the previous line
-    (next-line -1)
+    (forward-line -1)
     (back-to-indentation)
     ;; check if there's a plot or fit command and a line
     ;; continuation.  if so, adjust the indentation
