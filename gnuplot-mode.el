@@ -265,9 +265,10 @@ column to indent to."
     ;;       properly
     (end-of-line -1)                    ; go back *two* lines
     (forward-char -1)
-    (when (looking-at "\\\\
-\\s-+[^\\\\
-]+$")
+    ;; this regexp is horrible.  it means "a \, followed immediately
+    ;; by a newline, followed by some whitespace, followed by a single
+    ;; line which does not contain any slashes."
+    (when (looking-at "\\\\\n\\s-+[^\\\\\n]+$")
       (when (re-search-backward gnuplot-continued-commands-regexp nil t)
         (current-column)))))
 
