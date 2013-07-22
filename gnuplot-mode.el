@@ -344,7 +344,7 @@ work."
   (setq show-trailing-whitespace t)
 
   ;; run user hooks
-  (run-hooks 'gnuplot-mode-hook))
+  (run-mode-hooks 'gnuplot-mode-hook))
 
 ;;;###autoload
 (dolist (pattern '("\\.gnuplot\\'" "\\.gp\\'"))
