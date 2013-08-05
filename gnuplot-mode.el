@@ -294,9 +294,14 @@ arguments stored in `gnuplot-flags'.  Store the output in the
 buffer *gnuplot errors*, and raise it if gnuplot returns an exit
 code other than zero.  Hitting 'q' inside the *gnuplot errors*
 buffer kills the buffer and restores the previous window
-configuration."
-  (let ((gp-exit-status (call-process gnuplot-program file
-                                      "*gnuplot errors*" nil gnuplot-flags)))
+configuration.
+
+Note that I pass FILE as an argument to gnuplot, rather than as
+an input file.  This ensures gnuplot is run as
+'gnuplot -persist FILE', rather than 'gnuplot -persist < FILE'.
+The latter doesn't produce output parsable by compilation-mode."
+  (let ((gp-exit-status (call-process gnuplot-program nil "*gnuplot errors*"
+                                      nil gnuplot-flags file)))
     (message "Running gnuplot...")
     (cond
      ((eq gp-exit-status 0)
@@ -320,7 +325,7 @@ work."
   (interactive)
   (if (or (buffer-modified-p) (eq (buffer-file-name) nil))
     (message "buffer isn't saved")
-    (gnuplot-run-file (buffer-file-name))))
+    (gnuplot-run-file (file-name-nondirectory (buffer-file-name)))))
 
 
 
