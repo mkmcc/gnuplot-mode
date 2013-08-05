@@ -4,7 +4,7 @@
 ;;
 ;; Authors: Mike McCourt <mkmcc@astro.berkeley.edu>
 ;; URL: https://github.com/mkmcc/gnuplot
-;; Version: 1.1.1
+;; Version: 1.2.0
 ;; Keywords: gnuplot, plotting
 
 ;; This file is not part of GNU Emacs.
@@ -80,10 +80,6 @@
 ;;  1. the indentation commands use regular expressions, which
 ;;     probably isn't ideal.  is it possible to rework them to use the
 ;;     syntax table?
-;;
-;;  2. make the gnuplot errors work like a compile buffer.  e.g., have
-;;     commands like `next-error' and `previous-error'.  that would be
-;;     nice, but it sounds like a lot of work.
 ;;
 
 ;;; Code:
