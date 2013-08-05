@@ -109,6 +109,8 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-x p")   'gnuplot-compile)
     (define-key map (kbd "C-c C-c") 'gnuplot-compile)
+    (define-key map (kbd "C-c C-r") 'gnuplot-run-region)
+    (define-key map (kbd "C-c C-b") 'gnuplot-run-buffer)
     map)
   "Keymap for `gnuplot-mode'.")
 
@@ -394,6 +396,28 @@ work."
     (message "buffer isn't saved")
     (gnuplot-compile-file (file-name-nondirectory (buffer-file-name)))))
 
+;;;###autoload
+(defun gnuplot-run-region (start end)
+  "Send region to gnuplot, ensuring a final newline.  Doesn't
+require buffer to be visiting a file."
+  (interactive "r")
+  (let ((cmd-data
+         (buffer-substring-no-properties start end)))
+    (with-temp-buffer
+      (insert cmd-data "\n")
+      (message "Running gnuplot...")
+      (let* ((exit-status
+              (call-process-region
+               (point-min) (point-max)
+               gnuplot-program nil "*gnuplot errors*" nil gnuplot-flags)))
+        (gnuplot-handle-exit-status exit-status)))))
+
+;;;###autoload
+(defun gnuplot-run-buffer ()
+  "Send buffer to gnuplot, ensuring a final newline.  Doesn't
+require buffer to be visiting a file."
+  (interactive)
+  (gnuplot-run-region (point-min) (point-max)))
 
 (provide 'gnuplot-mode)
 
