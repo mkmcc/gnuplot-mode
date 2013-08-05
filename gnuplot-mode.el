@@ -322,9 +322,9 @@ Note that I pass FILE as an argument to gnuplot, rather than as
 an input file.  This ensures gnuplot is run as
 'gnuplot -persist FILE', rather than 'gnuplot -persist < FILE'.
 The latter doesn't produce output parsable by compilation-mode."
+  (message "Running gnuplot...")
   (let ((gp-exit-status (call-process gnuplot-program nil "*gnuplot errors*"
                                       nil gnuplot-flags file)))
-    (message "Running gnuplot...")
     (gnuplot-handle-exit-status gp-exit-status)))
 
 ;;;###autoload
