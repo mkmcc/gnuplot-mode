@@ -88,6 +88,8 @@
 
 ;;; Code:
 
+;;; user-settable options:
+
 (defvar gnuplot-program "gnuplot"
   "Command to run gnuplot.")
 
@@ -127,7 +129,8 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 
 
-;; font lock.  first, explicitly define syntax types
+;;; font lock.
+;; first, define syntax types via explicit lists
 (defvar gp-math-functions
   (regexp-opt
    '("abs"     "acos"   "acosh"    "arg"     "asin"
@@ -203,7 +206,7 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 
 
-;; indentation
+;;; indentation
 (defun gnuplot-find-indent-column ()
   "Find the column to indent to.
 
@@ -285,7 +288,36 @@ See `gnuplot-find-indent-column' for details."
 
 
 
-;; function to call gnuplot on the buffer
+;;; define a major mode
+;;;###autoload
+(define-derived-mode gnuplot-mode fundamental-mode
+  "Gnuplot"
+  "Major mode for editing gnuplot files"
+  :syntax-table gnuplot-mode-syntax-table
+
+  ;; indentation
+  (set (make-local-variable 'indent-line-function) 'gnuplot-indent-line)
+
+  ;; comment syntax for `newcomment.el'
+  (set (make-local-variable 'comment-start)      "# ")
+  (set (make-local-variable 'comment-end)        "")
+  (set (make-local-variable 'comment-start-skip) "#+\\s-*")
+
+  ;; font lock
+  (set (make-local-variable 'font-lock-defaults)
+       '(gnuplot-font-lock-keywords))
+  (setq show-trailing-whitespace t)
+
+  ;; run user hooks
+  (run-mode-hooks 'gnuplot-mode-hook))
+
+;;;###autoload
+(dolist (pattern '("\\.gnuplot\\'" "\\.gp\\'"))
+  (add-to-list 'auto-mode-alist (cons pattern 'gnuplot-mode)))
+
+
+
+;;; functions to run gnuplot
 (defun gnuplot-quit ()
   "Close the *gnuplot errors* buffer and restore the previous
 window configuration."
@@ -337,33 +369,6 @@ work."
     (message "buffer isn't saved")
     (gnuplot-run-file (file-name-nondirectory (buffer-file-name)))))
 
-
-
-;;;###autoload
-(define-derived-mode gnuplot-mode fundamental-mode
-  "Gnuplot"
-  "Major mode for editing gnuplot files"
-  :syntax-table gnuplot-mode-syntax-table
-
-  ;; indentation
-  (set (make-local-variable 'indent-line-function) 'gnuplot-indent-line)
-
-  ;; comment syntax for `newcomment.el'
-  (set (make-local-variable 'comment-start)      "# ")
-  (set (make-local-variable 'comment-end)        "")
-  (set (make-local-variable 'comment-start-skip) "#+\\s-*")
-
-  ;; font lock
-  (set (make-local-variable 'font-lock-defaults)
-       '(gnuplot-font-lock-keywords))
-  (setq show-trailing-whitespace t)
-
-  ;; run user hooks
-  (run-mode-hooks 'gnuplot-mode-hook))
-
-;;;###autoload
-(dolist (pattern '("\\.gnuplot\\'" "\\.gp\\'"))
-  (add-to-list 'auto-mode-alist (cons pattern 'gnuplot-mode)))
 
 (provide 'gnuplot-mode)
 
