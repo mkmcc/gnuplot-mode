@@ -107,8 +107,8 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 (defvar gnuplot-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-x p")   'gnuplot-run-buffer)
-    (define-key map (kbd "C-c C-c") 'gnuplot-run-buffer)
+    (define-key map (kbd "C-x p")   'gnuplot-compile)
+    (define-key map (kbd "C-c C-c") 'gnuplot-compile)
     map)
   "Keymap for `gnuplot-mode'.")
 
@@ -336,11 +336,28 @@ up our mess."
    (t
     (window-configuration-to-register :gnuplot-errors)
     (switch-to-buffer-other-window "*gnuplot errors*")
-    (read-only-mode)
+    (compilation-mode)
     (local-set-key (kbd "q") 'gnuplot-quit)
     (message "Gnuplot encountered errors."))))
 
-(defun gnuplot-run-file (file)
+(defun gnuplot-compile-start (file)
+  "Set up the compilation buffer.
+
+Clears the buffer, prints some information, and sets local
+variables which are used by `compilation-mode'."
+  (with-current-buffer (get-buffer-create "*gnuplot errors*")
+    (let ((inhibit-read-only t)
+          (command (concat gnuplot-program " "
+                           gnuplot-flags " "
+                           file)))
+      (erase-buffer)
+      (insert "-*- mode: compilation; default-directory: "
+              (prin1-to-string (abbreviate-file-name default-directory))
+              " -*-\n\n"
+              command "\n\n")
+      (setq compile-command command))))
+
+(defun gnuplot-compile-file (file)
   "Runs gnuplot synchronously.
 
 Run gnuplot as `gnuplot-program', operating on FILE, with the
@@ -350,24 +367,32 @@ code other than zero.  Hitting 'q' inside the *gnuplot errors*
 buffer kills the buffer and restores the previous window
 configuration.
 
-Note that I pass FILE as an argument to gnuplot, rather than as
-an input file.  This ensures gnuplot is run as
-'gnuplot -persist FILE', rather than 'gnuplot -persist < FILE'.
-The latter doesn't produce output parsable by compilation-mode."
+The output in *gnuplot errors* should be parsable by
+`compilation-mode', so commands like `next-error' and
+`previous-error' should work.
+
+This uses `call-process', rather than a shell command, in an
+attempt to be portable.  Note that I pass FILE as an argument to
+gnuplot, rather than as an input file.  This ensures gnuplot is
+run as 'gnuplot -persist FILE', rather than
+'gnuplot -persist < FILE'.  The latter doesn't produce useful
+output for compilation-mode."
+  (interactive)
   (message "Running gnuplot...")
-  (let ((gp-exit-status (call-process gnuplot-program nil "*gnuplot errors*"
-                                      nil gnuplot-flags file)))
-    (gnuplot-handle-exit-status gp-exit-status)))
+  (gnuplot-compile-start file)
+  (let ((exit-status (call-process gnuplot-program nil "*gnuplot errors*"
+                                   nil gnuplot-flags file)))
+    (gnuplot-handle-exit-status exit-status)))
 
 ;;;###autoload
-(defun gnuplot-run-buffer ()
+(defun gnuplot-compile ()
   "Runs gnuplot -persist as a synchronous process and passes the
 current buffer to it.  Buffer must be visiting a file for it to
 work."
   (interactive)
   (if (or (buffer-modified-p) (eq (buffer-file-name) nil))
     (message "buffer isn't saved")
-    (gnuplot-run-file (file-name-nondirectory (buffer-file-name)))))
+    (gnuplot-compile-file (file-name-nondirectory (buffer-file-name)))))
 
 
 (provide 'gnuplot-mode)
