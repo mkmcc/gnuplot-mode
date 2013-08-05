@@ -294,6 +294,20 @@ window configuration."
   (when (get-register :gnuplot-errors)
     (jump-to-register :gnuplot-errors)))
 
+(defun gnuplot-handle-exit-status (exit-status)
+  "Display output if gnuplot signals an error.  Otherwise, clean
+up our mess."
+  (cond
+   ((eq exit-status 0)
+    (kill-buffer "*gnuplot errors*")
+    (message "Running gnuplot... done."))
+   (t
+    (window-configuration-to-register :gnuplot-errors)
+    (switch-to-buffer-other-window "*gnuplot errors*")
+    (read-only-mode)
+    (local-set-key (kbd "q") 'gnuplot-quit)
+    (message "Gnuplot encountered errors."))))
+
 (defun gnuplot-run-file (file)
   "Runs gnuplot synchronously.
 
@@ -311,16 +325,7 @@ The latter doesn't produce output parsable by compilation-mode."
   (let ((gp-exit-status (call-process gnuplot-program nil "*gnuplot errors*"
                                       nil gnuplot-flags file)))
     (message "Running gnuplot...")
-    (cond
-     ((eq gp-exit-status 0)
-      (kill-buffer "*gnuplot errors*")
-      (message "Running gnuplot... done."))
-     (t
-      (window-configuration-to-register :gnuplot-errors)
-      (switch-to-buffer-other-window "*gnuplot errors*")
-      (read-only-mode)
-      (local-set-key (kbd "q") 'gnuplot-quit)
-      (message "Gnuplot encountered errors.")))))
+    (gnuplot-handle-exit-status gp-exit-status)))
 
 ;;;###autoload
 (defun gnuplot-run-buffer ()
