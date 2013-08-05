@@ -286,6 +286,14 @@ See `gnuplot-find-indent-column' for details."
 
 
 ;; function to call gnuplot on the buffer
+(defun gnuplot-quit ()
+  "Close the *gnuplot errors* buffer and restore the previous
+window configuration."
+  (interactive)
+  (kill-buffer)
+  (when (get-register :gnuplot-errors)
+    (jump-to-register :gnuplot-errors)))
+
 (defun gnuplot-run-file (file)
   "Runs gnuplot synchronously.
 
@@ -311,10 +319,7 @@ The latter doesn't produce output parsable by compilation-mode."
       (window-configuration-to-register :gnuplot-errors)
       (switch-to-buffer-other-window "*gnuplot errors*")
       (read-only-mode)
-      (local-set-key (kbd "q")
-                     (lambda () (interactive)
-                       (kill-buffer)
-                       (jump-to-register :gnuplot-errors)))
+      (local-set-key (kbd "q") 'gnuplot-quit)
       (message "Gnuplot encountered errors.")))))
 
 ;;;###autoload
