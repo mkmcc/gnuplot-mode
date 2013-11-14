@@ -170,7 +170,13 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 (defvar gp-term-types
   (regexp-opt
-   '("dumb" "x11" "postscript" "png" "gif" "enhanced")
+   '("cairolatex" "canvas" "cgm" "context" "corel" "dumb" "dxf"
+     "eepic" "emf" "emtex" "epscairo" "epslatex" "fig" "gif"
+     "gpic" "hp2623A" "hp2648" "hpgl" "imagen" "jpeg" "latex" "lua"
+     "mf" "mif" "mp" "pcl5" "pdfcairo" "png" "pngcairo" "postscript"
+     "pslatex" "pstex" "pstricks" "qms" "regis" "svg" "tek40xx"
+     "tek410x" "texdraw" "tgif" "tikz" "tkcanvas" "tpic" "unknown"
+     "vttek" "wxt" "x11" "xlib" "xterm")
    'words)
   "Gnuplot term types")
 
