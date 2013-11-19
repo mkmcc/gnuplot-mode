@@ -37,3 +37,19 @@ set multiplot layout 2,2 rowsfirst
 # graph c
   plot x**2
 unset multiplot
+
+
+
+# test block syntax
+do for [t=0:50] {
+  outfile = sprintf('animation/bessel%03.0f.png',t)
+  set output outfile
+  splot u*sin(v),u*cos(v),bessel(u,t/50.0) w pm3d ls 1
+}
+
+if (test) {
+  do for [iterator] {
+    plot something
+  }
+} else {
+}

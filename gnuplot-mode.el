@@ -191,14 +191,21 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 (defvar gp-commands
   (regexp-opt
-   '("plot" "splot" "fit" "replot" "set" "unset" "do for" "if" "else" "while")
+   '("plot" "splot" "fit" "replot" "set" "unset")
    'words)
   "Gnuplot commands")
+
+(defvar gp-block-commands
+  (regexp-opt
+   '("do for" "if" "else" "while")
+   'words)
+  "Commands which open brace-delimited blocks.")
 
 
 ;; apply font lock commands
 (defvar gnuplot-font-lock-keywords
   `((,gp-commands           . font-lock-constant-face)
+    (,gp-block-commands     . font-lock-constant-face)
     (,gp-math-functions     . font-lock-function-name-face)
     (,gp-other-functions    . font-lock-constant-face)
     (,gp-reserved-modifiers . font-lock-type-face)
@@ -271,6 +278,32 @@ column to indent to."
       (when (re-search-backward gnuplot-continued-commands-regexp nil t)
         (current-column)))))
 
+(defun gnuplot-block-indent ()
+  "Adjust indentation if we're inside a block command.
+
+Block commands start with (do for, if else, while) and are
+delimited by curly braces.  Lines inside the braces should pick
+up an extra two spaces.
+
+Returns 2 if we're at the first line of a block expression; -2 if
+we're the last; 0 otherwise."
+  (let ((first
+         ;; return +2 if we're the first line inside a block
+         (save-excursion
+           (forward-line -1)
+           (back-to-indentation)
+           (when (looking-at (concat gp-block-commands ".*{\\s-*$"))
+             2)))
+        (last
+         ;; return -2 if we're at the close of a block
+         (save-excursion
+           (back-to-indentation)
+           (when (looking-at "}")
+             -2))))
+    ;; check last before first; return 0 otherwise
+    (or last first 0)))
+
+
 (defun gnuplot-indent-line ()
   "Indent the current line.
 
@@ -281,6 +314,8 @@ See `gnuplot-find-indent-column' for details."
          ; check last-line-p first!
          (or (gnuplot-last-line-p)
              (gnuplot-find-indent-column))))
+    ;; shift the indent if we're inside a block
+    (setq indent (+ indent (gnuplot-block-indent)))
     (save-excursion
       (unless (= (current-indentation) indent)
         (beginning-of-line)
