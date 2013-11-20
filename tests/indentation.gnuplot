@@ -37,3 +37,12 @@ set multiplot layout 2,2 rowsfirst
 # graph c
   plot x**2
 unset multiplot
+
+
+# test of the "do for" loop which was introduced in gnuplot 4.6
+set term postscript eps enhanced color
+set out "looptest.eps"
+do for [i=0:4] {
+   set title sprintf("page %d/5",i+1)
+   plot sin(.5*pi*i*x) title sprintf("Sin(pi*x*%d/2)",i)
+}
