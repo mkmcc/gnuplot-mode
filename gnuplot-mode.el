@@ -191,7 +191,7 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 (defvar gp-commands
   (regexp-opt
-   '("plot" "splot" "fit" "replot" "set" "unset")
+   '("plot" "splot" "fit" "replot" "set" "unset" "do for" "if" "else" "while")
    'words)
   "Gnuplot commands")
 
