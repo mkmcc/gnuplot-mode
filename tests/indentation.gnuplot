@@ -39,10 +39,13 @@ set multiplot layout 2,2 rowsfirst
 unset multiplot
 
 
-# test of the "do for" loop which was introduced in gnuplot 4.6
+# test of the "do for" loop which was introduced in gnuplot 4.6.
+#   not working.
 set term postscript eps enhanced color
 set out "looptest.eps"
 do for [i=0:4] {
-   set title sprintf("page %d/5",i+1)
-   plot sin(.5*pi*i*x) title sprintf("Sin(pi*x*%d/2)",i)
+   set title "On ".sprintf("page %d/10",i+1) # pointless convoluted way
+   do for [mycolor in "blue red"]{           # a pointless second do loop
+      plot sin(.5*pi*i*x) lc rgb mycolor title sprintf("sin(pi*x*%d/2)",i)
+   }
 }
