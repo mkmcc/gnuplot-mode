@@ -191,20 +191,36 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
 
 (defvar gp-commands
   (regexp-opt
-   '("plot" "splot" "fit" "replot" "set" "unset" "do for" "if" "else" "while")
+   '("fit"  "set" "unset" "do for" "if" "else" "while")
    'words)
   "Gnuplot commands")
+
+(defvar gp-plot-commands
+  (regexp-opt
+   '("plot" "splot" "replot")
+   'words)
+  "Gnuplot plot commands")
+
+(defvar gp-variables
+  (regexp-opt
+   '("pi" "NaN")
+   'words)
+  "Gnuplot variables")
 
 
 ;; apply font lock commands
 (defvar gnuplot-font-lock-keywords
   `((,gp-commands           . font-lock-constant-face)
+    (,gp-plot-commands      . font-lock-keyword-face)
     (,gp-math-functions     . font-lock-function-name-face)
-    (,gp-other-functions    . font-lock-constant-face)
+    (,gp-other-functions    . font-lock-function-name-face)
     (,gp-reserved-modifiers . font-lock-type-face)
     (,gp-other-keywords     . font-lock-preprocessor-face)
-    (,gp-term-types         . font-lock-string-face)
+    (,gp-term-types         . font-lock-reference-face)
     (,gp-plot-types         . font-lock-function-name-face)
+    (,gp-variables          . font-lock-variable-name-face)
+    ("!"                    . font-lock-negation-char-face)
+    ("\\(\\<[a-z]+[a-z_0-9(),]*\\)[ \t]*=" . font-lock-variable-name-face) ; variable declaration
     ("\$[0-9]+"             . font-lock-string-face)   ; columns
     ("\\[\\([^]]+\\)\\]"    1 font-lock-string-face))) ; brackets
 
@@ -294,7 +310,7 @@ See `gnuplot-find-indent-column' for details."
 
 ;;; define a major mode
 ;;;###autoload
-(define-derived-mode gnuplot-mode fundamental-mode
+(define-derived-mode gnuplot-mode prog-mode ; how will pre emacs 24 react to this?
   "Gnuplot"
   "Major mode for editing gnuplot files"
   :syntax-table gnuplot-mode-syntax-table
