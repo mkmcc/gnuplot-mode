@@ -96,7 +96,9 @@
   "Hook to run after `gnuplot-mode'.")
 
 (defvar gnuplot-continued-commands-regexp
-  (regexp-opt '("splot" "plot" "fit") 'words)
+  (concat
+   (regexp-opt '("splot" "plot" "fit") 'words)
+   "\\(\\s-*\\[[^]]+]\\s-*\\)*")        ; optional range commands
   "Regexp which matches all commands which might continue over
 multiple lines.  Used in `gnuplot-find-indent-column' and in
 `gnuplot-last-line-p'.")
