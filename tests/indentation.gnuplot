@@ -18,7 +18,12 @@ plot sin(x) w l,\
 plot 1.0/tan(x) w l title "cot(x)",\
      arg(x)
 
+plot[-pi:pi][-1:1] sin(x),\
+                   cos(x)
 
+plot [-pi:pi] [-1.3:1.3] [-1:1] sin(t),\
+                                t**2,\
+                                cos(t) * sin(t)
 
 # note: in the below, the 'plot' commands want to indent to the left
 #   margin.  the mode just isn't smart enough to decide what you want
