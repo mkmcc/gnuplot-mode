@@ -12,7 +12,7 @@
 ;;; Commentary:
 
 ;; Defines a major mode for editing gnuplot scripts.  I wanted to keep
-;; it simpler than other modes -- just syntax hilighting, indentation,
+;; it simpler than other modes -- just syntax highlighting, indentation,
 ;; and a command to plot the file.
 
 ;; Some of this code is adapted from a more full-featured version by
@@ -28,7 +28,7 @@
 
 ;; (require 'package)
 ;; (add-to-list 'package-archives
-;;              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;;              '("melpa" . "https://melpa.org/packages/") t)
 
 ;; Alternatively, you can just save this file and do the standard
 ;; (add-to-list 'load-path "/path/to/gnuplot-mode.el")

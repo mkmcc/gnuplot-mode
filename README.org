@@ -33,7 +33,7 @@
   to gnuplot) or =C-c C-r= (send region to gnuplot), but the error
   reporting isn't as helpful with these functions.
 
-  This mode was insipired by the one written by Bruce Ravel (available [[http://cars9.uchicago.edu/~ravel/software/gnuplot-mode.html][here]]),
+  This mode was inspired by the one written by Bruce Ravel (available [[http://cars9.uchicago.edu/~ravel/software/gnuplot-mode.html][here]]),
   but I think it's much simpler to use -- it runs gnuplot non-interactively,
   and only has one command to remember.
 
@@ -64,7 +64,7 @@
   #+BEGIN_SRC emacs-lisp
     (require 'package)
     (add-to-list 'package-archives
-                 '("melpa" . "http://melpa.milkbox.net/packages/") t)
+                 '("melpa" . "https://melpa.org/packages/") t)
   #+END_SRC
 
   I hope you find this useful.  Please let me know if you encounter any
