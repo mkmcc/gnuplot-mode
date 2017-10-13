@@ -3,7 +3,7 @@
 ;; Copyright (C) 2010-2013 Mike McCourt
 ;;
 ;; Authors: Mike McCourt <mkmcc@astro.berkeley.edu>
-;; URL: https://github.com/mkmcc/gnuplot
+;; URL: https://github.com/mkmcc/gnuplot-mode
 ;; Version: 1.2.0
 ;; Keywords: gnuplot, plotting
 
