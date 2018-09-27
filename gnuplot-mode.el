@@ -237,6 +237,7 @@ multiple lines.  Used in `gnuplot-find-indent-column' and in
     (,gp-variables          . font-lock-variable-name-face)
     ("!"                    . font-lock-negation-char-face)
     ("\\(\\<[a-z]+[a-z_0-9(),]*\\)[ \t]*=" . font-lock-variable-name-face) ; variable declaration
+    ("@[a-z][a-z_0-9]*"     . font-lock-preprocessor-face) ; macro expansion
     ("\$[0-9]+"             . font-lock-string-face)   ; columns
     ("\\[\\([^]]+\\)\\]"    1 font-lock-string-face))) ; brackets
 
