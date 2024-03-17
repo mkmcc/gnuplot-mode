@@ -351,7 +351,7 @@ See `gnuplot-find-indent-column' for details."
 (dolist (pattern '("\\.gnuplot\\'" "\\.gp\\'"))
   (add-to-list 'auto-mode-alist (cons pattern 'gnuplot-mode)))
 
-
+(add-to-list 'interpreter-mode-alist (cons "gnuplot" 'gnuplot-mode))
 
 ;;; functions to run gnuplot
 (defun gnuplot-quit ()
